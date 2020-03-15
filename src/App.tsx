@@ -8,9 +8,11 @@ interface IState {
 
 // Check https://source.unsplash.com/ for the documentation
 
-// Create a picture size picker (e.g. 800x600, 1600x900 ... WIDTHxHEIGHT)
+// Create a component for a picture size picker (e.g. 800x600, 1600x900 ... WIDTHxHEIGHT)
 
 // Keep and display the image the search history. Hint: use a list of urls
+
+// Create a component that displays the image and has a button to remove it from the history.
 
 export default class App extends React.Component<{}, IState> {
 
