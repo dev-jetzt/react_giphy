@@ -1,34 +1,60 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 
-
-function App() {
-
-  const [input, setInput] = useState('');
-  const [content, setContent] = useState('');
-  let url = null;
-
-  if (content !== '') {
-    const words = content.split(' ').join(',');
-    url = 'https://source.unsplash.com/800x600/?' + words;
-  }
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          <input type="text" value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => { if (e.keyCode === 13) setContent(input) }}
-          ></input>
-          <input type="button" value="Search" onClick={() => setContent(input)}></input>
-        </p>
-        <div>
-          {url && <img alt={content} src={url} />}
-        </div>
-      </header>
-    </div>
-  );
+interface IState {
+  input: string;
+  content: string;
 }
 
-export default App;
+// Check https://source.unsplash.com/ for the documentation
+
+// Create a picture size picker (e.g. 800x600, 1600x900 ... WIDTHxHEIGHT)
+
+// Keep and display the image the search history. Hint: use a list of urls
+
+export default class App extends React.Component<{}, IState> {
+
+  constructor(props: {}) {
+    super(props);
+
+    this.state = {
+      input: '',
+      content: '',
+    };
+  }
+  
+  public componentDidMount() {
+    this.setState({
+      input: '',
+      content: ''
+    });
+  }
+
+  private get url() {
+    const { content } = this.state;
+
+    if (content !== '') {
+      const words = content.split(' ').join(',');
+      return 'https://source.unsplash.com/800x600/?' + words;
+    }
+
+    return null;
+  }
+
+  public render() {
+    return <div className="App">
+      <header className="App-header">
+        <p>
+          <input type="text" value={this.state.input}
+            onChange={(e) => this.setState({...this.state, input: e.target.value}) }
+            onKeyDown={(e) => { if (e.keyCode === 13) this.setState({...this.state, content: this.state.input}) }}
+          ></input>
+          <input type="button" value="Search" onClick={() => this.setState({...this.state, content: this.state.input})}></input>
+        </p>
+        <div>
+          {this.url && <img alt={this.state.content} src={this.url} />}
+        </div>
+      </header>
+    </div>;
+  }
+};
